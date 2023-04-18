@@ -1,6 +1,4 @@
 function solution(arrayA, arrayB) {
-    let answer = 0;
-    
     arrayA.sort((a, b) => b - a);
     arrayB.sort((a, b) => b - a);
     
