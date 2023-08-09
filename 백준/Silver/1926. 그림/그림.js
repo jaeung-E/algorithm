@@ -3,7 +3,6 @@ const input = fs.readFileSync("dev/stdin").toString().trim().split("\n");
 const [[N, M], ...paper] = input.map((str) => str.split(" ").map(Number));
 const dx = [-1, 0, 1, 0];
 const dy = [0, 1, 0, -1];
-let weight = 0;
 
 function solution() {
   const paints = [];
@@ -11,11 +10,8 @@ function solution() {
 
   for (let x = 0; x < N; x++) {
     for (let y = 0; y < M; y++) {
-      if (visited[x][y] === false && paper[x][y] === 1) {
-        searchPaint(x, y, visited);
-        paints.push(weight);
-        weight = 0;
-      }
+      if (visited[x][y] === false && paper[x][y] === 1)
+        paints.push(searchPaint(x, y, visited));
     }
   }
 
@@ -23,16 +19,18 @@ function solution() {
 }
 
 function searchPaint(x, y, visited) {
+  let depth = 1;
   visited[x][y] = true;
-  weight++;
 
   for (let i = 0; i < dx.length; i++) {
     const nx = x + dx[i];
     const ny = y + dy[i];
 
     if (isBound(nx, ny) && !visited[nx][ny] && paper[nx][ny] === 1)
-      searchPaint(nx, ny, visited);
+      depth += searchPaint(nx, ny, visited);
   }
+
+  return depth;
 }
 
 function isBound(x, y) {
